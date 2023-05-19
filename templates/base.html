@@ -13,6 +13,9 @@
         ></script>
     </head>
     <body>
-        
+        <div class="content">
+            {% comment %} No need to rewrite an entire html page with this block {% endcomment %}
+            {% block content %} {% endblock %} 
+        </div>
     </body>
 </html>

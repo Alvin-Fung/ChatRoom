@@ -8,12 +8,9 @@ app.config["SECRET_KEY"] = "thefungchat"
 socketio = SocketIO(app)
 
 #First root - Homepage
-@app.root("/frontend/", methods = ["POST","GET"])
+@app.route("/", methods = ["POST","GET"])
 def home():
-    return render_template("login.html")
-
-#Second root - Chat room
-
+    return render_template("home.html")
 
 
 #Initializer
