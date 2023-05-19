@@ -7,8 +7,44 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "thefungchat"
 socketio = SocketIO(app)
 
+rooms = {}
+
+def generate_unique_code(Length):
+    while True:
+        code = ""
+        for _ in range(Length):
+            code += random.choice(ascii_uppercase)
+        
+        if code not in rooms:
+            break
+        
+    return code
+
 @app.route("/", methods = ["POST","GET"])
 def home():
+    if request.method == "POST":
+        name = request.form.get("name")
+        code = request.form.get("code")
+        #.get will attempt to the dictionary(form)
+        #safer method of acquiring a value associated within the form
+        #both join and create will have empty values
+        join = request.form.get("join", False) 
+        create = request.form.get("create", False)
+        
+        if not name:
+            return render_template("home.html", error="Please enter a name!", code=code, name=name)
+        
+        if join != False and not code:
+            return render_template("home.html", error="Please enter a room code!", code=code, name=name)
+        
+        #Room creation
+        room = code
+        if create != False: #"if they're not creating a room, then they must be joining a room."
+            room = generate_unique_code(4)
+            rooms[room] = {"members": 0, "messages": []} #Starting data for room dictionary
+        elif code not in rooms: 
+            return render_template("home.html", error="Room does not exist.")
+        
     return render_template("home.html")
 
 
