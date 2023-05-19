@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect
+from flask import Flask, render_template, request, session, redirect, url_for
 from flask_socketio import SocketIO, send, join_room, leave_room
 import random
 from string import ascii_uppercase
@@ -22,6 +22,7 @@ def generate_unique_code(Length):
 
 @app.route("/", methods = ["POST","GET"])
 def home():
+    session.clear()
     if request.method == "POST":
         name = request.form.get("name")
         code = request.form.get("code")
@@ -45,8 +46,20 @@ def home():
         elif code not in rooms: 
             return render_template("home.html", error="Room does not exist.")
         
+        session["room"] = room #Storing info about a user, instead of using logins for now.
+        session["name"] = room
+        return redirect(url_for("room")) #Redirecting the user to the chat 
+        
     return render_template("home.html")
 
+@app.route("/room")
+def room():
+    #Guard clause
+    room = session.get("room")
+    if room is None or session.get("name") is None or room not in rooms:
+        return redirect(url_for("home"))
+    
+    return render_template("room.html")
 
 #Initializer
 if __name__ == "__main__":
