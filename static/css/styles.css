@@ -1,4 +1,9 @@
-.buttons {
+.content{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+}
+.form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,7 +12,7 @@
 }
 
 .join {
-    display:flex;
+    display: flex;
     flex-direction: row;
     width: 100%;
 }
