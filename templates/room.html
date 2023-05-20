@@ -32,8 +32,12 @@
             </span>
         </div>
         `
-    }
-
+        messages.innerHTML += content;
+    };
+    {% comment %} Listener {% endcomment %}
+    socket.on("message", (data) =>{
+        createMessage(data.name, data.message);
+    });
 
     const  sendMessage = () => {
         console.log("send");
