@@ -62,7 +62,7 @@ def room():
     return render_template("room.html")
 
 @socketio.on("connnect")
-def connect(auth):
+def connect():
     room = session.get("room")
     name = session.get("name")
     
@@ -87,7 +87,7 @@ def disconnect():
         rooms[room]["members"] -= 1
         if rooms[room]["members"] <=0:
             del rooms[room]
-    send({"name": name, "message": "has left the room"}, to = room)
+    send({"name": name, "message": "has left the room!"}, to = room)
     print(f"{name} has left the room {room}")
     
     
